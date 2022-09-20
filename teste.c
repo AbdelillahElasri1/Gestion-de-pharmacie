@@ -3,54 +3,45 @@
 #include<math.h>
 #include<windows.h>
 #include<string.h>
-
- typedef struct  {
-   long long int code;
+ 
+typedef struct  {
+    int code;
     char nom[100];
     int quantite;
     float prix;
-} medicament;
+    float TTC_produit;
+} product;
 
-
-
-void AjouterProduit();
-void AjouterPlusieurProduit();
-void ListerProduit();
-void AcheterProduit();
+//Declaration des variables
+    int i;
+    int nbr_produit;
+    product T[100];
+    int total_produit=0;
+    product temp;
+    int NombreDeRecherche;
+    int NombreMethodeRecherche;
+    int QuantiteMethodeRecherche;
+    int CodeProduit;
+    int CodeAlimenterStock;
+//Declaration des fonctions
+void Lister_product();
 int RechercheProduit();
-void EtatDeStock();
-void AlimenterStock();
 void SupprimeProduit();
-void StatistiqueVente();
-void listProduitdeTest();
- 
-    medicament Abdo[100];
+void AlimenterLeStock();
+void EtatDeStock();
+void AcheterProduit();
+
+
+
+
 int main()
-{     
-    medicament A={213324,"abdc",3234,42};
-    medicament B={696694,"gfdshb",123,32};
-    medicament C={7432,"kajabd",764,54};
-    medicament D={326474,"owr",92346,97};
-    medicament E={82345,"uwegf",4376,85};
-    medicament F={7432,"wejgr",8756,99};
-  
-    
-    
-
-     Abdo[0]=A;
-     Abdo[1]=B;
-     Abdo[2]=C;
-     Abdo[3]=D;
-     Abdo[4]=E;
-     Abdo[5]=F;
-
-     printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
-     //printf("----------\t----------\t----------\t----------\t--------\t--------\t---------\n");
-     printf("\t\t\t\t\t\t [MENU] \t\t\t\t\t\t\t\t\t\t\n\n\n");
-        //float nbr;
-        int nbr;
-
-
+{
+    int repete=0;
+    int nbr;
+        do {
+        do{
+            printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
+            printf("\t\t\t\t\t\t [MENU] \t\t\t\t\t\t\t\t\t\t\n\n\n");
         
     printf("\t\t\t\t\t1-Ajouter un nouveau produit.\n\n");
     printf("\t\t\t\t\t2-Ajouter plusieurs nouveaux produits.\n\n");
@@ -62,220 +53,244 @@ int main()
     printf("\t\t\t\t\t8-Supprimer les produits par code.\n\n");
     printf("\t\t\t\t\t9-Stasitique de vente.\n\n");
     printf("\t\t\t\t\t10-Exit.\n\n");
+
     printf("\t\t\t\t\tchoisi une service: ");
     scanf(" %d",&nbr);
     system("cls");
+
     switch (nbr)
     {
     case 1:
-            AjouterProduit();
-
+            
+            printf("entrer product:%d \n",total_produit+1);
+            printf("enter code produit: ");
+            scanf("%d",&T[total_produit].code);
+            printf("entrer name of product: ");
+            scanf("%s",T[total_produit].nom);
+            printf("entrer Quantite: ");
+            scanf("%d",&T[total_produit].quantite);
+            printf("entrer prix de produit (DH): ");
+            scanf("%f",&T[total_produit].prix);
+            total_produit++;
         break;
     case 2:
-            AjouterPlusieurProduit(Abdo);
+            printf("veuillez saisir nombre de produits: ");
+            scanf("%d",&nbr_produit);
+            for( i=total_produit;i<nbr_produit+total_produit;i++)
+                {
+                printf("entrer product %d:\n",i+1);
+                printf("enter code produit:");
+                scanf("%d",&T[i].code);
+                printf("entrer name of product:");
+                scanf("%s",T[i].nom);
+                printf("entrer Quantite:");
+                scanf("%d",&T[i].quantite);
+                printf("entrer prix de produit (DH):");
+                scanf("%f",&T[i].prix);
+                printf("produit est bien ajouter.\n");
+                }
+                total_produit+=nbr_produit;
             break;
     case 3:
-           ListerProduit();
+        Lister_product();
             break;
     case 4:
-            AcheterProduit();
+             AcheterProduit();
             break;
     case 5:
             RechercheProduit();
+            
             break;
     case 6:
             EtatDeStock();
+            
             break;
     case 7:
-            AlimenterStock();
+           AlimenterLeStock();
             break;
     case 8:
-            SupprimeProduit();
+            //printf("case 8\n");
+            SupprimeProduit(CodeProduit);
             break;
     case 9:
-            StatistiqueVente();
+            printf("case 9\n");
             break;
-    case 10: 
+    case 10:
             exit(0);
             break;
     default:
-    printf("entrer correct choix.");
+    printf("\t\t\t\t\tentrer correct choix.\n");
         break;
     }
- 
-   
-    
-        
-    return 0;
+
+    printf("\t\t\t\t\tvous voullez quite:\n ");
+    printf("\t\t\t\t\t 1-non\n \t\t\t\t\t 2-oui\n");
+    printf("\t\t\t\t\t=>");
+    scanf("%d",&repete);
+    system("cls");
+    }while(nbr<1 || nbr>10);
+        }while(repete==1);
+
 }
-void AjouterProduit()
+
+void Lister_product()
 {
-    //ajouter products
-    medicament M1;
-  printf("entrer product: \n");
-  printf("enter code produit: ");
-  scanf(" %d",&M1.code);
-  printf("entrer name of product: ");
-  scanf(" %s",M1.nom);
-  //printf("\n");
-  printf("entrer Quantite: ");
-  scanf(" %d",&M1.quantite);
-  printf("entrer prix de produit (DH): ");
-  scanf(" %.2f",&M1.prix);
-
-//   printf("show information: ");
-//   printf("%d %s %d %f ",M1.code,M1.nom,M1.quantite,M1.prix);
-}
-void AjouterPlusieurProduit(medicament T[])
-{  
-    int nbr_produit;
-    printf("veuillez saisir nombre de produits: ");
-    scanf("%d",&nbr_produit);
-    for(int i=0;i<nbr_produit;i++)
-    {
-          
-  printf("entrer product %d:\n",i);
-  printf("enter code produit:");
-  //printf("%d",nbr_produit);
-
-  scanf("%d",&T[i].code);
-  
-  printf("entrer name of product:");
-  scanf("%s",T[i].nom);
-  //printf("\n");
-  printf("entrer Quantite:");
-  scanf("%d",&T[i].quantite);
-  printf("entrer prix de produit (DH):");
-  scanf("%.2f",&T[i].prix);
-  printf("produit est bien ajouter.");
-    }
-
-}
-void ListerProduit()
-{
-    int nbr_lister,i,j;
-    int T[10]={3,7,1,9,6,5,10,26,48,30};
-     printf("1-Lister les produits selon ordre alphabetique.\n");
-            printf("2-Lister les produits selon ordre decroissant du prix.\n");
-            printf("choisi methode de lister: ");
-            scanf(" %d",&nbr_lister);
-            system("cls");
-            switch (nbr_lister)
+            int affichage;
+            printf("Afficher les produit: \n");
+            printf("1-Selon l'ordre alphabetique (a to z).\n");
+            printf("2-Selon l'ordre decroissant du prix.\n");
+            printf("Quoi tu peut:");
+            scanf("%d",&affichage);
+            switch(affichage)
             {
             case 1:
-                   printf("entrer les alphabetique des produits.");
-                  
-                   
-                break;
-            case 2:
-                   //printf("entrer les prix des produits.");
-                   
-    int i ;
-    int swap;
+                   printf("Alphabetique: \n");
+                
+                   for(int i=0;i<total_produit-1;i++){
+                   for(int j=i+1;j<total_produit;j++){
+                      if(strcmp(T[i].nom,T[j].nom)==1){
+                           temp=T[i];
+                           T[i]=T[j];
+                           T[j]=temp;
+                        }
+                        }
+                    }
+                    
+                    printf("Les produits trie par nom croissant : \n\n");
+                    for(int i=0;i<total_produit;i++){
+                      float  TTC_produit=T[i].prix*0.15;
+                        printf("\nNom :%s   Prix :%.2f  prix TTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
+                        }
 
-    int T[14]={2,8,3,54,32,34,45,6,564,335,34,56,34,13};
-    for (i=0;i<14;i++)
-    {
-        if(T[i]>T[i+1])
-        {
-             swap=T[i];
-            T[i]=T[i+1];
-            T[i+1]=swap;
-        } 
-       printf("%d ",T[i]);
-
-    }
-    // min=T[0];
-    // max=T[14];
-    // printf("max=%d\n",max);
-    // printf("min=%d",min);
-    break;
-    default:
-    printf("error");
-    break;
+                         break;
+             case 2:
+                   printf("decroissant du prix: \n");
+                    for(int i=0;i<total_produit-1;i++){
+                   for(int j=i+1;j<total_produit;j++){
+                      if(T[i].prix<T[j].prix){
+                           temp=T[i];
+                           T[i]=T[j];
+                           T[j]=temp;
+                        }
+                        }
+                    }
+                    
+                    printf("Les produits trie par nom croissant : \n\n");
+                    for(int i=0;i<total_produit;i++){
+                       float TTC_produit=T[i].prix*0.15;
+                        printf("\nNom :%s   Prix :%.2f  prix TTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
+                        }
+                   
+                    break;
+            default:
+                    printf("entrer choix correct.");
+                    break;
             }
 
-                   
-
 }
-void AcheterProduit()
+int RechercheProduit()
 {
-
-}
-int RechercheProduit(int codeproduit)
-{
-    for (int i = 0; i < 20; i++)
-    {
-        if (Abdo[i].code==codeproduit)
+    printf("Recherche de produit:\n");
+  printf("1-code.\n");
+  printf("2-Quantite.\n");
+  printf("Quoi tu peux:");
+  scanf("%d",&NombreDeRecherche);
+  switch (NombreDeRecherche)
+  {
+  case 1:
+        printf("saisir code de produit:");
+        scanf("%d",&NombreMethodeRecherche);
+        for( i=0;i<total_produit;i++)
         {
-            printf("%d %s %d %f",Abdo[i].code,Abdo[i].nom,Abdo[i].quantite,Abdo[i].prix);
+            if(NombreMethodeRecherche==T[i].code)
+                printf("nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,T[i].TTC_produit,T[i].quantite);
+        }
+    break;
+  case 2:
+        printf("saisir quantite de produit:");
+        scanf("%d",&QuantiteMethodeRecherche);
+        for(i=0;i<total_produit;i++)
+        {
+            if(QuantiteMethodeRecherche==T[i].quantite)
+               printf("nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,T[i].TTC_produit,T[i].quantite);
+        }
+   
+    break;
+  
+  default:
+  printf("ERROR");
+    break;
+  }
+}
+void SupprimeProduit(int CodeProduit)
+{
+    int index;
+    printf("saisir le code produit:");
+    scanf("%d",&CodeProduit);
+    for(i=0;i<total_produit;i++)
+    {
+        if(CodeProduit==T[i].code)
+        {
+            index=i;
+        }
+      
+    }
+        for(i=index;i<total_produit;i++)
+        {
+           T[i]=T[i+1];
+        }
+        total_produit--;
+    printf("produit supprime success.");
+}
+void AlimenterLeStock()
+{
+    int PlusQuantite;
+  printf("saisir le code de produit:");
+  scanf("%d",&CodeAlimenterStock);
+  printf("saisir nombre de Quantite:");
+  scanf("%d",&PlusQuantite);
+    for(i=0;i<total_produit;i++)
+    {
+        if(CodeAlimenterStock==T[i].code)
+        {
+            T[i].quantite+=PlusQuantite;
+            printf("quantite de produit: %d",T[i].quantite);
+            break;
         }
     }
-    
-
 }
 void EtatDeStock()
 {
-
-}
-void AlimenterStock()
-{
-
-}
-void SupprimeProduit(int codePrSupprimer)
-{ 
-     int posCodePrSupprimer = RechercheProduit(codePrSupprimer);
-    for (int i = posCodePrSupprimer; i < 100; i++)
+    for(i=0;i<total_produit;i++)
     {
-        Abdo[i] = Abdo[i+1];
+        if(T[i].quantite<3)
+        {
+            printf(" nom: %s\n code: %d\n quantite: %d\n prix: %.2f\n",T[i].nom,T[i].code,T[i].quantite,T[i].prix);
+        }
     }
-    printf("======================================\n");
-    ListerProduit();
-
 }
-void StatistiqueVente()
+void AcheterProduit()
 {
+    int CodeAcheter,QuantiteAcheter;
+    printf("saisir le code de produit:");
+    scanf("%d",&CodeAcheter);
+    printf("entrer la quantite tu peut acheter:");
+    scanf("%d",&QuantiteAcheter);
+    for(i=0;i<total_produit;i++)
+    {
+        if(CodeAcheter==T[i].code)
+        {
+            if(QuantiteAcheter>T[i].quantite)
+            {
+                printf("!!STOP!!==>la quantite actuellement de produit : %d\n",T[i].quantite);
+                break;
+            } else { 
+            T[i].quantite-=QuantiteAcheter;
+            printf("voila l'achat est terminer success.\n");
+            printf("la quantite reste apres achat : %d\n",T[i].quantite);
+            break;
+            }
+        }
+    }
 
 }
-void listProduitdeTest(){
-    medicament c1 = {6118000060154 ,"GLUCOR",200,230,20};
-    medicament c2 = {6118000241324 ,"REVOCIR",100,115,10};
-    medicament c3 = {6118000070573 ,"LISASPIN",140,230,20};
-    medicament c4 = {6118000061106 ,"ASPEGIC ENF",300,340,4};
-    medicament c5 = {6118000060857 ,"SURGAM",20,25,10};
-    medicament c6 = {6118000061243 ,"EXACYL",10,12,50};
-    medicament c7 = {6118001141357 ,"ZENTEL",20,30,11};
-    medicament c8 = {6118000022251 ,"ZYLORIC",30,33,1};
-    medicament c9 = {6118001081288 ,"XATRAL",222,250,2};
-    medicament c10 ={6118001182657 ,"AMIKLIN",230,280,2};
-    medicament c11 ={6118000071136 ,"DIPICOR",123,140,100};
-    medicament c12 ={6118000180043 ,"AMODEX",222,234,45};
-    medicament c13 ={6118000030102 ,"AXIMYCINE",33,44,7};
-    medicament c14 ={6118000161059 ,"CLAMOXYL",44,50,23};
-    medicament c15 ={6118000161189 ,"PENAMOX",23,44,4};
-    medicament c16 ={6118000160038 ,"AMOXIL",44,66,11};
-    medicament c17 ={6118000160359 ,"CLAMOXYL",66,88,99};
-    medicament c18 ={6118000160724 ,"PENAMOX",210,230,30};
-    medicament c19 ={6118000031161 ,"AXIMYCINE",122,255,37};
-    medicament c20 ={6118001200818 ,"FUCITHALMIC",140,160,55};
-    Abdo[0] = c1;
-    Abdo[1] = c2;
-    Abdo[2] = c3;
-    Abdo[3] = c4;
-    Abdo[4] = c5;
-    Abdo[5] = c6;
-    Abdo[6] = c7;
-    Abdo[7] = c8;
-    Abdo[8] = c9;
-    Abdo[9] = c10;
-    Abdo[10] = c11;
-    Abdo[11] = c12;
-    Abdo[12] = c13;
-    Abdo[13] = c14;
-    Abdo[14] = c15;
-    Abdo[15] = c16;
-    Abdo[16] = c17;
-    Abdo[17] = c18;
-    Abdo[18] = c19;
-    Abdo[19] = c20;
-};
