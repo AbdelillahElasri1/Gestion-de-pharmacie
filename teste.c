@@ -38,17 +38,18 @@ typedef struct
     int CodeAlimenterStock;
     int Code,Quantite;
     int CodeAcheterList=0;
-    int number_buy=0;
+    float Total=0;
+   // int number_buy=0;
     //int CodeAcheter,QuantiteAcheter;
 //Declaration des fonctions
-void Lister_product();
-int RechercheProduit();
-void SupprimeProduit();
-void AlimenterLeStock();
-void EtatDeStock();
-void AcheterProduit();
-void StatistiqueDeStock();
-int NombreProduitVendus();
+    void Lister_product();
+    int RechercheProduit();
+    void SupprimeProduit();
+    void AlimenterLeStock();
+    void EtatDeStock();
+    void AcheterProduit();
+    void StatistiqueDeStock();
+    int NombreProduitVendus();
 
 
 
@@ -57,10 +58,10 @@ int main()
 {
     int repete=0;
     int nbr;
-        do {
-        do{
-            printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
-            printf("\t\t\t\t\t\t [MENU] \t\t\t\t\t\t\t\t\t\t\n\n\n");
+    do {
+    do{
+    printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
+    printf("\t\t\t\t\t\t [MENU] \t\t\t\t\t\t\t\t\t\t\n\n\n");
     printf("\t\t\t************************************************************\n");
     printf("\t\t\t\t\t1-Ajouter un nouveau produit.\n");
     printf("\t\t\t*----------------------------------------------------------*\n");
@@ -121,24 +122,21 @@ int main()
                 total_produit+=nbr_produit;
             break;
     case 3:
-        Lister_product();
+            Lister_product();
             break;
     case 4:
-             AcheterProduit();
+            AcheterProduit();
             break;
     case 5:
             RechercheProduit();
-            
             break;
     case 6:
             EtatDeStock();
-            
             break;
     case 7:
-           AlimenterLeStock();
+            AlimenterLeStock();
             break;
     case 8:
-            //printf("case 8\n");
             SupprimeProduit(CodeProduit);
             break;
     case 9:
@@ -152,13 +150,13 @@ int main()
         break;
     }
 
-    printf("vous voullez quite:\n ");
-    printf("1-non\n 2-oui\n");
-    printf("=>");
-    scanf("%d",&repete);
-    system("cls");
-    }while(nbr<1 || nbr>10);
-        }while(repete==1);
+        printf("vous voullez quite:\n ");
+        printf("1-non\n 2-oui\n");
+        printf("=>");
+        scanf("%d",&repete);
+        system("cls");
+        }while(nbr<1 || nbr>10);
+            }while(repete==1);
 
 }
 
@@ -269,7 +267,7 @@ void SupprimeProduit(int CodeProduit)
            T[i]=T[i+1];
         }
         total_produit--;
-    printf("produit supprime success.");
+    printf("produit supprime success.\n");
 }
 void AlimenterLeStock()
 {
@@ -283,7 +281,7 @@ void AlimenterLeStock()
         if(CodeAlimenterStock==T[i].code)
         {
             T[i].quantite+=PlusQuantite;
-            printf("quantite de produit: %d",T[i].quantite);
+            printf("quantite de produit: %d \n",T[i].quantite);
             break;
         }
     }
@@ -295,6 +293,9 @@ void EtatDeStock()
         if(T[i].quantite<3)
         {
             printf(" nom: %s\n code: %d\n quantite: %d\n prix: %.2f\n",T[i].nom,T[i].code,T[i].quantite,T[i].prix);
+        } else {
+            printf("tous les produits est superieur a 3.\n");
+            break;
         }
     }
 }
@@ -336,7 +337,7 @@ void AcheterProduit()
 void StatistiqueDeStock()
 {
     int NombreChoixStatistique;
-    float Total=0;
+    // float Total=0;
     float TotalPrixProduit=0;
     time_t t = time(NULL);
             struct tm date = *localtime(&t);
@@ -356,11 +357,15 @@ void StatistiqueDeStock()
                    Total+=Q[i].quantite*Q[i].prix_TTC;
                 }
             }
-            printf("Total des prix vendus : %f\n",Total);
+            printf("Total des prix vendus : %.2f \n",Total);
             
         break;
     case 2:
-        printf("la moyenne des prix des produit vendus en journee courante:%f\n",Total/nbr_produiVendu);
+        NombreProduitVendus();
+        printf("%d \n",nbr_produiVendu);
+        float Moyenne = Total/nbr_produiVendu;
+
+        printf("la moyenne des prix des produit vendus en journee courante:%.2f \n",Moyenne);
         break;
     case 3:
        maxPrix();
@@ -380,7 +385,7 @@ int NombreProduitVendus()
     struct tm tm = *localtime(&t);
     for(int i=0;i<CodeAcheterList;i++){
         
-            if(T[i].code==Q[i].code && Q[i].Day==tm.tm_mday && Q[i].Month==tm.tm_mon+1  && Q[i].Years==tm.tm_year+1900){
+            if(Q[i].Day==tm.tm_mday && Q[i].Month==tm.tm_mon+1  && Q[i].Years==tm.tm_year+1900){
                 nbr_produiVendu++;
             }
         
@@ -392,24 +397,26 @@ void maxPrix(){
     float max=Q[0].prix_TTC;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    for(int j=0;j<number_buy;j++){
+    for(int j=0;j<CodeAcheterList;j++){
         if(max<Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900){
             max=Q[j].prix_TTC;
         }
     }
     //transferer le prix TTC vers prix
-    printf("le max des pric des produit vendus en journee courante  Max = %f",max);
+    printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
+    printf("le max des prix des produit vendus en journee courante  Max = %.2f \n",max);
 }
 void minPrix(){
     //initialiser la valeur min
     float min=Q[0].prix_TTC;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    for(int j=0;j<number_buy;j++){
+    for(int j=0;j<CodeAcheterList;j++){
         if(min>Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900){
             min=Q[j].prix_TTC;
         }
     }
     //transferer le prix TTC vers prix
-    printf("le Min des prix des produits vendus en journee courante Min=%f",min);
+     printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
+    printf("le Min des prix des produits vendus en journee courante Min=%.2f \n",min);
 }
