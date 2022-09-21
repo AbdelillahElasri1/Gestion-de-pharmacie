@@ -35,7 +35,6 @@ typedef struct
     int NombreMethodeRecherche;
     int QuantiteMethodeRecherche;
     int CodeProduit;
-    int CodeAlimenterStock;
     int Code,Quantite;
     int AcheterList=0;
     float Total=0;
@@ -58,8 +57,8 @@ typedef struct
 // fonction principale (main):
 int main()
 {
-    int repete=0;
-    int nbr;
+    int repete=0;   //variable pour repeter Menu.
+    int nbr;        //variable pour choisi un choix dans menu.
     do {
     do {
     printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
@@ -132,12 +131,12 @@ int main()
     printf("=>");
     scanf("%d",&repete);
     system("cls");
-    }while(nbr<1 || nbr>10);
+    }while(nbr<1 || nbr>10);  // si choix ne trouve pas dans menu il va repeter "entrer correct choix".
     }while(repete==1);
-
+    // fin de main() fonction principale.
 }
 // les fonctions utilise :
-void Lister_product()
+void Lister_product()  // fonction de tri les produits par alphabetique ou par prix.
 {
             int affichage;
             printf("Afficher les produit: \n");
@@ -148,29 +147,29 @@ void Lister_product()
             switch(affichage)
             {
                 case 1:
-                printf("Alphabetique: \n");
+                printf("Alphabetique: \n");   //tri par selection (alphabetique).
                 for(int i=0;i<total_produit-1;i++)
                     {
                     for(int j=i+1;j<total_produit;j++)
                         {
-                        if(strcmp(T[i].nom,T[j].nom)==1)
+                        if(strcmp(T[i].nom,T[j].nom)==1) //strcmp est une fonction de comparaison entre deux string.
                             {
                                 temp=T[i];
-                                T[i]=T[j];
+                                T[i]=T[j];      // swaping entre les indices
                                 T[j]=temp;
                             }
                         }
                     }
-                printf("Les produits trie par nom croissant : \n\n");
+                printf("Les produits trie par nom croissant : \n\n");   
                 for(int i=0;i<total_produit;i++)
                     {
-                        float  TTC_produit=T[i].prix*0.15;
+                        float  TTC_produit=T[i].prix*0.15;   //relation de transaction prix au TTC prix.
                         printf("\nNom:%s\n---------------\nprix:%.2f\n--------------\nprixTTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
                     }
 
                 break;
                 case 2:
-                    printf("decroissant du prix: \n");
+                    printf("decroissant du prix: \n");   //tri par prix decroissant.
                     for(int i=0;i<total_produit-1;i++)
                         {
                         for(int j=i+1;j<total_produit;j++)
@@ -183,8 +182,8 @@ void Lister_product()
                                 }
                             }
                         }
-                    printf("Les produits trie par nom croissant : \n\n");
-                    for(int i=0;i<total_produit;i++)
+                    printf("Les produits trie par prix decroissant : \n\n");
+                    for(int i=0;i<total_produit;i++)   //affichage des produit trie par prix decroissant.
                         {
                             float TTC_produit=T[i].prix*0.15;
                             printf("\nNom :%s   Prix :%.2f  prix TTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
@@ -206,27 +205,27 @@ int RechercheProduit()
     switch (NombreDeRecherche)
             {
             case 1:
-        printf("saisir code de produit:");
-        scanf("%d",&NombreMethodeRecherche);
-        for( i=0;i<total_produit;i++)
-        {
-            if(NombreMethodeRecherche==T[i].code)
-                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
-        }
-        break;
-        case 2:
-        printf("saisir quantite de produit:");
-        scanf("%d",&QuantiteMethodeRecherche);
-        for(i=0;i<total_produit;i++)
-            {
-            if(QuantiteMethodeRecherche==T[i].quantite)
-                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
-            }
-        break;
-        default:
+                    printf("saisir code de produit:");
+                    scanf("%d",&NombreMethodeRecherche);
+                    for( i=0;i<total_produit;i++)
+                        {
+                            if(NombreMethodeRecherche==T[i].code)
+                                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
+                        }
+                    break;
+            case 2:
+                    printf("saisir quantite de produit:");
+                    scanf("%d",&QuantiteMethodeRecherche);
+                    for(i=0;i<total_produit;i++)
+                        {
+                            if(QuantiteMethodeRecherche==T[i].quantite)
+                                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
+                        }
+                    break;
+            default:
                 printf("ERROR\n");
-        break;
-        }
+                    break;
+            }
 }
 void SupprimeProduit(int CodeProduit)
 {
@@ -244,19 +243,20 @@ void SupprimeProduit(int CodeProduit)
             {
                 T[i]=T[i+1];
             }
-                total_produit--;
+                total_produit--;   // dans le cas de supprime quelqu'un produit , total_produit - 1.
         printf("produit supprime success.\n");
 }
 void AlimenterLeStock()
 {
     int PlusQuantite;
+    int CodeAlimenterStock;
     printf("saisir le code de produit:");
     scanf("%d",&CodeAlimenterStock);
     printf("saisir nombre de Quantite:");
     scanf("%d",&PlusQuantite);
     for(i=0;i<total_produit;i++)
         {
-            if(CodeAlimenterStock==T[i].code)
+            if(CodeAlimenterStock==T[i].code)  // condition pour recherche de produit.
                 {
                     T[i].quantite+=PlusQuantite;
                     printf("quantite de produit: %d \n",T[i].quantite);
@@ -279,7 +279,7 @@ void EtatDeStock()
 }
 void AcheterProduit()
 {
-    float quantiteXprix;
+    //float quantiteXprix;
     printf("saisir le code de produit:");
     scanf("%d",&Code);
     printf("entrer la quantite tu peut acheter:");
@@ -295,13 +295,13 @@ void AcheterProduit()
                         } else { 
                                 T[i].quantite-=Quantite;
                                 //quantiteXprix=T[i].prix * QuantiteAcheter;
-                                Q[AcheterList].code=Code;
-                                Q[AcheterList].quantite=Quantite;
-                                Q[AcheterList].prix_TTC=T[i].prix+T[i].prix*0.15;
+                                Q[AcheterList].code=Code;    //stokage de code  produit acheter dans tableau d'Achat => variable AcheterList.
+                                Q[AcheterList].quantite=Quantite;  //stokage Quantite de produit acheter dans tableau d'Achat => variable AcheterList.
+                                Q[AcheterList].prix_TTC=T[i].prix+T[i].prix*0.15;  //stokage prixTTC de produit acheter dans tableau d'Achat => variable AcheterList.
                                 time_t t = time(NULL);
                                 struct tm date = *localtime(&t);
                                 Q[AcheterList].Day=date.tm_mday;
-                                Q[AcheterList].Month=date.tm_mon+1;
+                                Q[AcheterList].Month=date.tm_mon+1;   // stokage date d'Achat produit 
                                 Q[AcheterList].Years=date.tm_year+1900;
                                 printf("voila l'achat est terminer success.\n");
                                 AcheterList++;
@@ -391,7 +391,6 @@ void MinPrixProduit(){
                     min=Q[j].prix_TTC;
                 }
         }
-    //transferer le prix TTC vers prix
     printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
     printf("le Min des prix des produits vendus en journee courante Min=%.2f \n",min);
 }
