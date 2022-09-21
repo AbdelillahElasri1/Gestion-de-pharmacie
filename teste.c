@@ -4,14 +4,14 @@
 #include<windows.h>
 #include<string.h>
 #include<time.h>
- 
+//Declaration de structure pour les produit
 typedef struct  {
     int code;
     char nom[100];
     int quantite;
     float prix;
-    float TTC_produit;
 } product;
+// Declaration de structure pour l'achat
 typedef struct 
 {
     int code;
@@ -23,47 +23,45 @@ typedef struct
 }Achat;
 
 
-//Declaration des variables
+//Declaration des variables global:
+    product T[100];
+    product temp;
+    Achat Q[100];
     int i;
     int nbr_produit;
     int nbr_produiVendu=0;
-    product T[100];
-    Achat Q[100];
     int total_produit=0;
-    product temp;
     int NombreDeRecherche;
     int NombreMethodeRecherche;
     int QuantiteMethodeRecherche;
     int CodeProduit;
     int CodeAlimenterStock;
     int Code,Quantite;
-    int CodeAcheterList=0;
+    int AcheterList=0;
     float Total=0;
-   // int number_buy=0;
-    //int CodeAcheter,QuantiteAcheter;
-//Declaration des fonctions
-    void Lister_product();
-    int RechercheProduit();
-    void SupprimeProduit();
-    void AlimenterLeStock();
-    void EtatDeStock();
-    void AcheterProduit();
-    void StatistiqueDeStock();
-    int NombreProduitVendus();
+//Declaration des fonctions utilise dans fonction main:
     void AjouterProduit();
     void AjouterPlusieurProduit();
+    void Lister_product();
+    void AcheterProduit();
+    int RechercheProduit();
+    void EtatDeStock();
+    void AlimenterLeStock();
+    void SupprimeProduit();
+    void StatistiqueDeStock();
+    int NombreProduitVendus();
     void MaxPrixProduit();
     void MinPrixProduit();
 
 
 
-
+// fonction principale (main):
 int main()
 {
     int repete=0;
     int nbr;
     do {
-    do{
+    do {
     printf("\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\t\t\t\t\t     GESTION PHARMACIE \n\n\t\t\t\t\t$$$$$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n");
     printf("\t\t\t\t\t\t [MENU] \t\t\t\t\t\t\t\t\t\t\n\n\n");
     printf("\t\t\t************************************************************\n");
@@ -126,20 +124,19 @@ int main()
             exit(0);
             break;
     default:
-    printf("entrer correct choix.\n");
-        break;
+            printf("entrer correct choix.\n");
+            break;
     }
-
-        printf("vous voullez quite:\n ");
-        printf("1-non\n 2-oui\n");
-        printf("=>");
-        scanf("%d",&repete);
-        system("cls");
-        }while(nbr<1 || nbr>10);
-            }while(repete==1);
+    printf("vous voullez quite:\n ");
+    printf("1-non\n 2-oui\n");
+    printf("=>");
+    scanf("%d",&repete);
+    system("cls");
+    }while(nbr<1 || nbr>10);
+    }while(repete==1);
 
 }
-
+// les fonctions utilise :
 void Lister_product()
 {
             int affichage;
@@ -150,169 +147,168 @@ void Lister_product()
             scanf("%d",&affichage);
             switch(affichage)
             {
-            case 1:
-                   printf("Alphabetique: \n");
-                
-                   for(int i=0;i<total_produit-1;i++){
-                   for(int j=i+1;j<total_produit;j++){
-                      if(strcmp(T[i].nom,T[j].nom)==1){
-                           temp=T[i];
-                           T[i]=T[j];
-                           T[j]=temp;
-                        }
+                case 1:
+                printf("Alphabetique: \n");
+                for(int i=0;i<total_produit-1;i++)
+                    {
+                    for(int j=i+1;j<total_produit;j++)
+                        {
+                        if(strcmp(T[i].nom,T[j].nom)==1)
+                            {
+                                temp=T[i];
+                                T[i]=T[j];
+                                T[j]=temp;
+                            }
                         }
                     }
-                    
-                    printf("Les produits trie par nom croissant : \n\n");
-                    for(int i=0;i<total_produit;i++){
-                      float  TTC_produit=T[i].prix*0.15;
+                printf("Les produits trie par nom croissant : \n\n");
+                for(int i=0;i<total_produit;i++)
+                    {
+                        float  TTC_produit=T[i].prix*0.15;
                         printf("\nNom:%s\n---------------\nprix:%.2f\n--------------\nprixTTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
-                        }
-
-                         break;
-             case 2:
-                   printf("decroissant du prix: \n");
-                    for(int i=0;i<total_produit-1;i++){
-                   for(int j=i+1;j<total_produit;j++){
-                      if(T[i].prix<T[j].prix){
-                           temp=T[i];
-                           T[i]=T[j];
-                           T[j]=temp;
-                        }
-                        }
                     }
-                    
-                    printf("Les produits trie par nom croissant : \n\n");
-                    for(int i=0;i<total_produit;i++){
-                       float TTC_produit=T[i].prix*0.15;
-                        printf("\nNom :%s   Prix :%.2f  prix TTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
+
+                break;
+                case 2:
+                    printf("decroissant du prix: \n");
+                    for(int i=0;i<total_produit-1;i++)
+                        {
+                        for(int j=i+1;j<total_produit;j++)
+                            {
+                            if(T[i].prix<T[j].prix)
+                                {
+                                    temp=T[i];
+                                    T[i]=T[j];
+                                    T[j]=temp;
+                                }
+                            }
                         }
-                   
-                    break;
-            default:
+                    printf("Les produits trie par nom croissant : \n\n");
+                    for(int i=0;i<total_produit;i++)
+                        {
+                            float TTC_produit=T[i].prix*0.15;
+                            printf("\nNom :%s   Prix :%.2f  prix TTC:%.2f\n",T[i].nom,T[i].prix,T[i].prix+TTC_produit);
+                        }
+                break;
+                default:
                     printf("entrer choix correct.");
-                    break;
+                break;
             }
 
 }
 int RechercheProduit()
 {
-    printf("Recherche de produit:\n");
-  printf("1-code.\n");
-  printf("2-Quantite.\n");
-  printf("Quoi tu veux:");
-  scanf("%d",&NombreDeRecherche);
-  switch (NombreDeRecherche)
-  {
-  case 1:
+        printf("Recherche de produit:\n");
+        printf("1-code.\n");
+        printf("2-Quantite.\n");
+        printf("Quoi tu veux:");
+        scanf("%d",&NombreDeRecherche);
+    switch (NombreDeRecherche)
+            {
+            case 1:
         printf("saisir code de produit:");
         scanf("%d",&NombreMethodeRecherche);
         for( i=0;i<total_produit;i++)
         {
             if(NombreMethodeRecherche==T[i].code)
-                printf("nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,T[i].TTC_produit,T[i].quantite);
+                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
         }
-    break;
-  case 2:
+        break;
+        case 2:
         printf("saisir quantite de produit:");
         scanf("%d",&QuantiteMethodeRecherche);
         for(i=0;i<total_produit;i++)
-        {
+            {
             if(QuantiteMethodeRecherche==T[i].quantite)
-               printf("nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,T[i].TTC_produit,T[i].quantite);
+                printf(" nom: %s\n code: %d\n prix: %.2f\n TTC prix: %.2f\n quantite: %d\n",T[i].nom,T[i].code,T[i].prix,Q[i].prix_TTC,T[i].quantite);
+            }
+        break;
+        default:
+                printf("ERROR\n");
+        break;
         }
-   
-    break;
-  
-  default:
-  printf("ERROR");
-    break;
-  }
 }
 void SupprimeProduit(int CodeProduit)
 {
-    int index;
-    printf("saisir le code produit:");
-    scanf("%d",&CodeProduit);
-    for(i=0;i<total_produit;i++)
-    {
-        if(CodeProduit==T[i].code)
-        {
-            index=i;
-        }
-      
-    }
+        int index;
+        printf("saisir le code produit:");
+        scanf("%d",&CodeProduit);
+        for(i=0;i<total_produit;i++)
+            {
+                if(CodeProduit==T[i].code)
+                    {
+                        index=i;
+                    }
+            }
         for(i=index;i<total_produit;i++)
-        {
-           T[i]=T[i+1];
-        }
-        total_produit--;
-    printf("produit supprime success.\n");
+            {
+                T[i]=T[i+1];
+            }
+                total_produit--;
+        printf("produit supprime success.\n");
 }
 void AlimenterLeStock()
 {
     int PlusQuantite;
-  printf("saisir le code de produit:");
-  scanf("%d",&CodeAlimenterStock);
-  printf("saisir nombre de Quantite:");
-  scanf("%d",&PlusQuantite);
+    printf("saisir le code de produit:");
+    scanf("%d",&CodeAlimenterStock);
+    printf("saisir nombre de Quantite:");
+    scanf("%d",&PlusQuantite);
     for(i=0;i<total_produit;i++)
-    {
-        if(CodeAlimenterStock==T[i].code)
         {
-            T[i].quantite+=PlusQuantite;
-            printf("quantite de produit: %d \n",T[i].quantite);
-            break;
+            if(CodeAlimenterStock==T[i].code)
+                {
+                    T[i].quantite+=PlusQuantite;
+                    printf("quantite de produit: %d \n",T[i].quantite);
+                    break;
+                }
         }
-    }
 }
 void EtatDeStock()
 {
     for(i=0;i<total_produit;i++)
-    {
-        if(T[i].quantite<3)
         {
-            printf(" nom: %s\n code: %d\n quantite: %d\n prix: %.2f\n",T[i].nom,T[i].code,T[i].quantite,T[i].prix);
-        } else {
-            printf("tous les produits est superieur a 3.\n");
-            break;
+            if(T[i].quantite<3)
+                {
+                    printf(" nom: %s\n code: %d\n quantite: %d\n prix: %.2f\n",T[i].nom,T[i].code,T[i].quantite,T[i].prix);
+                } else {
+                        printf("tous les produits est superieur a 3.\n");
+                        break;
+                        }
         }
-    }
 }
 void AcheterProduit()
 {
     float quantiteXprix;
-    
     printf("saisir le code de produit:");
     scanf("%d",&Code);
     printf("entrer la quantite tu peut acheter:");
     scanf("%d",&Quantite);
     for(i=0;i<total_produit;i++)
-    {
-        if(Code == T[i].code)
         {
-            if(Quantite > T[i].quantite)
-            {
-                printf("!!STOP!!==>la quantite actuellement de produit : %d\n",T[i].quantite);
-                break;
-            } else { 
-            T[i].quantite-=Quantite;
-            //quantiteXprix=T[i].prix * QuantiteAcheter;
-            Q[CodeAcheterList].code=Code;
-            Q[CodeAcheterList].quantite=Quantite;
-            Q[CodeAcheterList].prix_TTC=T[i].prix+T[i].prix*0.15;
-            time_t t = time(NULL);
-            struct tm date = *localtime(&t);
-            Q[CodeAcheterList].Day=date.tm_mday;
-            Q[CodeAcheterList].Month=date.tm_mon+1;
-            Q[CodeAcheterList].Years=date.tm_year+1900;
-            printf("voila l'achat est terminer success.\n");
-            CodeAcheterList++;
-            break;
-            }
+            if(Code == T[i].code)
+                {
+                    if(Quantite > T[i].quantite)
+                        {
+                            printf("!!STOP!!==>la quantite actuellement de produit : %d\n",T[i].quantite);
+                            break;
+                        } else { 
+                                T[i].quantite-=Quantite;
+                                //quantiteXprix=T[i].prix * QuantiteAcheter;
+                                Q[AcheterList].code=Code;
+                                Q[AcheterList].quantite=Quantite;
+                                Q[AcheterList].prix_TTC=T[i].prix+T[i].prix*0.15;
+                                time_t t = time(NULL);
+                                struct tm date = *localtime(&t);
+                                Q[AcheterList].Day=date.tm_mday;
+                                Q[AcheterList].Month=date.tm_mon+1;
+                                Q[AcheterList].Years=date.tm_year+1900;
+                                printf("voila l'achat est terminer success.\n");
+                                AcheterList++;
+                                break;
+                                }
+                }
         }
-    }
-
 }
 void StatistiqueDeStock()
 {
@@ -320,7 +316,7 @@ void StatistiqueDeStock()
     // float Total=0;
     float TotalPrixProduit=0;
     time_t t = time(NULL);
-            struct tm date = *localtime(&t);
+    struct tm date = *localtime(&t);
     printf("1-Afficher le total des prix des produits vendus en journée courante.\n");
     printf("2-Afficher la moyenne des prix des produits vendus en journée courante.\n");
     printf("3-Afficher le Max des prix des produits vendus en journée courante.\n");
@@ -330,40 +326,35 @@ void StatistiqueDeStock()
     switch (NombreChoixStatistique)
     {
     case 1:
-            for(i=0;i<CodeAcheterList;i++)
+            for(i=0;i<AcheterList;i++)
             {
                 if(Q[i].Day==date.tm_mday && Q[i].Month==date.tm_mon+1 && Q[i].Years==date.tm_year+1900 )
-                {
-                   Total+=Q[i].quantite*Q[i].prix_TTC;
-                }
+                    {
+                        Total+=Q[i].quantite*Q[i].prix_TTC;
+                    }
             }
             printf("Total des prix vendus : %.2f \n",Total);
-            
-        break;
+            break;
     case 2:
-        NombreProduitVendus();
-        printf("%d \n",nbr_produiVendu);
-        float Moyenne = Total/nbr_produiVendu;
-
-        printf("la moyenne des prix des produit vendus en journee courante:%.2f \n",Moyenne);
-        break;
+            NombreProduitVendus();
+            float Moyenne = Total/nbr_produiVendu;
+            printf("la moyenne des prix des produit vendus en journee courante:%.2f \n",Moyenne);
+            break;
     case 3:
-       MaxPrixProduit();
-        break;
+            MaxPrixProduit();
+            break;
     case 4:
-       MinPrixProduit();
-        break;    
-    
+            MinPrixProduit();
+            break;    
     default:
-        break;
+            break;
     }
 }
 int NombreProduitVendus()
- {
-       
+{
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    for(int i=0;i<CodeAcheterList;i++){
+    for(int i=0;i<AcheterList;i++){
         
             if(Q[i].Day==tm.tm_mday && Q[i].Month==tm.tm_mon+1  && Q[i].Years==tm.tm_year+1900){
                 nbr_produiVendu++;
@@ -371,17 +362,19 @@ int NombreProduitVendus()
         
     }
     return nbr_produiVendu;
- }
+}
 void MaxPrixProduit(){
     //initialiser la valeur max
     float max=Q[0].prix_TTC;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    for(int j=0;j<CodeAcheterList;j++){
-        if(max<Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900){
-            max=Q[j].prix_TTC;
+    for(int j=0;j<AcheterList;j++)
+        {
+            if(max<Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900)
+                {
+                    max=Q[j].prix_TTC;
+                }
         }
-    }
     //transferer le prix TTC vers prix
     printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
     printf("le max des prix des produit vendus en journee courante  Max = %.2f \n",max);
@@ -391,13 +384,15 @@ void MinPrixProduit(){
     float min=Q[0].prix_TTC;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    for(int j=0;j<CodeAcheterList;j++){
-        if(min>Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900){
-            min=Q[j].prix_TTC;
+    for(int j=0;j<AcheterList;j++)
+        {
+            if(min>Q[j].prix_TTC && Q[j].Day==tm.tm_mday && Q[j].Month==tm.tm_mon+1  && Q[j].Years==tm.tm_year+1900)
+                {
+                    min=Q[j].prix_TTC;
+                }
         }
-    }
     //transferer le prix TTC vers prix
-     printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
+    printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
     printf("le Min des prix des produits vendus en journee courante Min=%.2f \n",min);
 }
 void AjouterProduit()
@@ -417,7 +412,7 @@ void AjouterPlusieurProduit()
 {
             printf("veuillez saisir nombre de produits: ");
             scanf("%d",&nbr_produit);
-            for( i=total_produit;i<nbr_produit+total_produit;i++)
+            for(i=total_produit;i<nbr_produit+total_produit;i++)
                 {
                 printf("entrer product %d:\n",i+1);
                 printf("enter code produit:");
