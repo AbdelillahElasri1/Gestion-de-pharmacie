@@ -50,6 +50,10 @@ typedef struct
     void AcheterProduit();
     void StatistiqueDeStock();
     int NombreProduitVendus();
+    void AjouterProduit();
+    void AjouterPlusieurProduit();
+    void MaxPrixProduit();
+    void MinPrixProduit();
 
 
 
@@ -92,34 +96,10 @@ int main()
     {
     case 1:
             
-            printf("entrer product:%d \n",total_produit+1);
-            printf("enter code produit: ");
-            scanf("%d",&T[total_produit].code);
-            printf("entrer name of product: ");
-            scanf("%s",T[total_produit].nom);
-            printf("entrer Quantite: ");
-            scanf("%d",&T[total_produit].quantite);
-            printf("entrer prix de produit (DH): ");
-            scanf("%f",&T[total_produit].prix);
-            total_produit++;
-        break;
+            AjouterProduit();
+            break;
     case 2:
-            printf("veuillez saisir nombre de produits: ");
-            scanf("%d",&nbr_produit);
-            for( i=total_produit;i<nbr_produit+total_produit;i++)
-                {
-                printf("entrer product %d:\n",i+1);
-                printf("enter code produit:");
-                scanf("%d",&T[i].code);
-                printf("entrer name of product:");
-                scanf("%s",T[i].nom);
-                printf("entrer Quantite:");
-                scanf("%d",&T[i].quantite);
-                printf("entrer prix de produit (DH):");
-                scanf("%f",&T[i].prix);
-                printf("produit est bien ajouter.\n");
-                }
-                total_produit+=nbr_produit;
+            AjouterPlusieurProduit();
             break;
     case 3:
             Lister_product();
@@ -368,10 +348,10 @@ void StatistiqueDeStock()
         printf("la moyenne des prix des produit vendus en journee courante:%.2f \n",Moyenne);
         break;
     case 3:
-       maxPrix();
+       MaxPrixProduit();
         break;
     case 4:
-       minPrix();
+       MinPrixProduit();
         break;    
     
     default:
@@ -392,7 +372,7 @@ int NombreProduitVendus()
     }
     return nbr_produiVendu;
  }
-void maxPrix(){
+void MaxPrixProduit(){
     //initialiser la valeur max
     float max=Q[0].prix_TTC;
     time_t t = time(NULL);
@@ -406,7 +386,7 @@ void maxPrix(){
     printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
     printf("le max des prix des produit vendus en journee courante  Max = %.2f \n",max);
 }
-void minPrix(){
+void MinPrixProduit(){
     //initialiser la valeur min
     float min=Q[0].prix_TTC;
     time_t t = time(NULL);
@@ -419,4 +399,36 @@ void minPrix(){
     //transferer le prix TTC vers prix
      printf(" %d - %d - %d \n",tm.tm_mday,tm.tm_mon+1,tm.tm_year+1900);
     printf("le Min des prix des produits vendus en journee courante Min=%.2f \n",min);
+}
+void AjouterProduit()
+{
+            printf("entrer product:%d \n",total_produit+1);
+            printf("enter code produit: ");
+            scanf("%d",&T[total_produit].code);
+            printf("entrer name of product: ");
+            scanf("%s",T[total_produit].nom);
+            printf("entrer Quantite: ");
+            scanf("%d",&T[total_produit].quantite);
+            printf("entrer prix de produit (DH): ");
+            scanf("%f",&T[total_produit].prix);
+            total_produit++;
+}
+void AjouterPlusieurProduit()
+{
+            printf("veuillez saisir nombre de produits: ");
+            scanf("%d",&nbr_produit);
+            for( i=total_produit;i<nbr_produit+total_produit;i++)
+                {
+                printf("entrer product %d:\n",i+1);
+                printf("enter code produit:");
+                scanf("%d",&T[i].code);
+                printf("entrer name of product:");
+                scanf("%s",T[i].nom);
+                printf("entrer Quantite:");
+                scanf("%d",&T[i].quantite);
+                printf("entrer prix de produit (DH):");
+                scanf("%f",&T[i].prix);
+                printf("produit est bien ajouter.\n");
+                }
+                total_produit+=nbr_produit;
 }
